@@ -1,0 +1,24 @@
+<html>
+<head><title>KapsuleKorp - Test Infra</title></head>
+<body>
+    <h1>Bienvenue chez KapsuleKorp ! 🚀</h1>
+    <p>Ceci est une page de test déployée par Ansible.</p>
+    
+    <h2>Test de connexion Base de Données :</h2>
+    <?php
+    $servername = "{{ db_host }}";
+    $username = "{{ vault_mysql_user }}";
+    $password = "{{ vault_mysql_password }}";
+    $dbname = "{{ vault_mysql_db }}";
+
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    echo "<p>bien avant </p>";
+    // Vérifier la connexion
+    if ($conn->connect_error) {
+          echo "<p>erreuuuuurrrr</p>";
+    }
+    echo "<p style='color:green'> Connexion réussie à la base de données <b>$dbname</b> sur le serveur <b>$servername</b> !</p>";
+    ?>
+</body>
+</html>

@@ -1,0 +1,14 @@
+- name: Installer PHP et les modules nécessaires
+  apt:
+    name:
+      - php8.1
+      - php8.1-fpm
+      - php8.1-mysql
+    state: present
+    update_cache: yes
+
+- name: Démarrer le service PHP-FPM
+  service:
+    name: php8.1-fpm
+    state: started
+    enabled: yes

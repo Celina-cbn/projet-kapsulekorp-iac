@@ -1,0 +1,36 @@
+---
+- name: Installer MySQL Server
+  apt:
+    name:
+      - mysql-server
+      - python3-mysqldb
+    state: present
+    update_cache: yes
+
+- name: Démarrer le service MySQL
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+
+# On installe les dépendances Python pour que Ansible puisse gérer MySQL
+- name: Installer PyMySQL (nécessaire pour le module mysql_db)
+  apt:
+    name: python3-pymysql
+    state: present
+
+# Configuration de la base de données avec les secrets du Vault
+- name: Créer la base de données
+  mysql_db:
+    name: "{{ vault_mysql_db }}"
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Créer l'utilisateur MySQL de l'application
+  mysql_user:
+    name: "{{ vault_mysql_user }}"
+    password: "{{ vault_mysql_password }}"
+    priv: "{{ vault_mysql_db }}.*:ALL"
+    host: "%"  # Autorise la connexion depuis n'importe où (pour le serveur web)
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock

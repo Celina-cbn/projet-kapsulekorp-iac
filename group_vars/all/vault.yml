@@ -1,0 +1,4 @@
+vault_mysql_root_password: "ansible"
+vault_mysql_db: "ansible_db"
+vault_mysql_user: "db_user"
+vault_mysql_password: "ansible"

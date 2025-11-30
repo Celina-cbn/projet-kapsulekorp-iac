@@ -1,0 +1,12 @@
+# Configuration des Serveurs Web
+- hosts: webservers
+  become: true  # Pour passer root (sudo) automatiquement
+  roles:
+    - nginx
+    - php
+
+# Configuration des Serveurs de Base de Données
+- hosts: dbservers
+  become: true
+  roles:
+    - mysql
