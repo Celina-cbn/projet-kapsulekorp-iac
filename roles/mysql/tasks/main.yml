@@ -7,6 +7,13 @@
     state: present
     update_cache: yes
 
+- name: Configurer MySQL pour accepter les connexions externes (bind-address)
+  lineinfile:
+    path: /etc/mysql/mysql.conf.d/mysqld.cnf
+    regexp: '^bind-address'
+    line: 'bind-address = 0.0.0.0'
+  notify: Redémarrer MySQL
+
 - name: Démarrer le service MySQL
   service:
     name: mysql
