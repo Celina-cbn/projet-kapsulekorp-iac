@@ -1,8 +1,3 @@
-- name: Mettre à jour le cache APT (équivalent de apt update)
-  apt:
-    update_cache: yes
-    cache_valid_time: 3600
-
 - name: Installer Nginx
   apt:
     name: nginx
@@ -15,7 +10,7 @@
     enabled: yes
 
 - name: Supprimer la configuration par défaut de Nginx
-  file:
+  ansible.builtin.file:
     path: /etc/nginx/sites-enabled/default
     state: absent
   notify: Redémarrer Nginx
@@ -27,16 +22,11 @@
   notify: Redémarrer Nginx
 
 - name: Activer le site (lien symbolique)
-  file:
+  ansible.builtin.file:
     src: /etc/nginx/sites-available/kapsule.conf
     dest: /etc/nginx/sites-enabled/kapsule.conf
     state: link
   notify: Redémarrer Nginx
-
-- name: Créer un fichier PHP de test (info.php)
-  copy:
-    content: "<?php phpinfo(); ?>"
-    dest: /var/www/html/info.php
 
 - name: Déployer la page d'accueil PHP (index.php)
   template:
@@ -45,6 +35,6 @@
   notify: Redémarrer Nginx
 
 - name: Supprimer le index.html par défaut
-  file:
+  ansible.builtin.file:
     path: /var/www/html/index.nginx-debian.html
     state: absent
