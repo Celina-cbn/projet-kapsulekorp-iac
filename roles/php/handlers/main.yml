@@ -1,0 +1,4 @@
+- name: Redémarrer PHP
+  service:
+    name: php8.1-fpm
+    state: restarted

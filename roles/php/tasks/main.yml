@@ -1,13 +1,43 @@
-- name: Installer PHP et les modules nécessaires
+---
+# 1. Installation propre avec une liste claire
+- name: Installer PHP 8.1 et les extensions nécessaires
   apt:
     name:
       - php8.1
       - php8.1-fpm
       - php8.1-mysql
+      - php8.1-curl 
+      - php8.1-xml 
+      - php8.1-zip 
     state: present
     update_cache: yes
 
-- name: Démarrer le service PHP-FPM
+# 2. Configuration : optimiser PHP pour recevoir des fichier plus lourd
+- name: Augmenter la taille max d'upload (upload_max_filesize)
+  lineinfile:
+    path: /etc/php/8.1/fpm/php.ini # chemin du file
+    regexp: '^upload_max_filesize' # la ligne searched
+    line: 'upload_max_filesize = 10M' # par quoi on la remplace
+  notify: Redémarrer PHP
+
+- name: Augmenter la taille max des données POST (post_max_size)
+  lineinfile:
+    path: /etc/php/8.1/fpm/php.ini
+    regexp: '^post_max_size'
+    line: 'post_max_size = 10M'
+  notify: Redémarrer PHP
+
+# 3. Organisation : On prépare le terrain pour le site
+# donner les permissions a Ngnix
+- name: Créer le répertoire dédié au projet KapsuleKorp
+  file:
+    path: /var/www/kapsulekorp
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+
+- name: Démarrer et activer PHP-FPM
   service:
     name: php8.1-fpm
     state: started

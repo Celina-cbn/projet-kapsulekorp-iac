@@ -27,6 +27,7 @@
     state: present
 
 # Configuration de la base de données avec les secrets du Vault
+# Le paramètre login_unix_socket permet à Ansible de se connecter localement en administrateur via le système de fichiers, sans avoir besoin de mot de passe réseau pour cette action.
 - name: Créer la base de données
   mysql_db:
     name: "{{ vault_mysql_db }}"

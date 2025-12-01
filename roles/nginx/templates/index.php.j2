@@ -1,24 +1,29 @@
 <html>
 <head><title>KapsuleKorp - Test Infra</title></head>
 <body>
-    <h1>Bienvenue chez KapsuleKorp ! 🚀</h1>
+    <h1>Projet IAC</h1>
     <p>Ceci est une page de test déployée par Ansible.</p>
     
     <h2>Test de connexion Base de Données :</h2>
     <?php
+    // Configuration technique (On garde l'IP pour que la connexion marche !)
     $servername = "{{ db_host }}";
     $username = "{{ vault_mysql_user }}";
     $password = "{{ vault_mysql_password }}";
     $dbname = "{{ vault_mysql_db }}";
 
+    // Configuration visuelle (Ansible détecte tout seul si c'est Prod ou Staging)
+    $env_name = "{{ 'Production' if 'production' in group_names else 'Staging' }}";
 
+    // Créer la connexion
     $conn = new mysqli($servername, $username, $password, $dbname);
-    echo "<p>bien avant </p>";
+
     // Vérifier la connexion
     if ($conn->connect_error) {
-          echo "<p>erreuuuuurrrr</p>";
+         die("<p style='color:red'> Échec : " . $conn->connect_error . "</p>");
     }
-    echo "<p style='color:green'> Connexion réussie à la base de données <b>$dbname</b> sur le serveur <b>$servername</b> !</p>";
+    // Ici on affiche le joli nom ($env_name) au lieu de l'IP brute
+    echo "<p style='color:green'> Connexion réussie à la base de données <b>$dbname</b> sur l'environnement <b>$env_name</b> !</p>";
     ?>
 </body>
 </html>
