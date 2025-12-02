@@ -78,7 +78,7 @@ cd projet-kapsulekorp-iac
 
 Mettez à jour le fichier inventory.ini avec les IPs de vos machines virtuelles :
 
-```toml
+```
 [staging]
 srv-staging-web ansible_host=0.0.0.0 ansible_user=votre_user
 srv-staging-db  ansible_host=0.0.0.0 ansible_user=votre_user
